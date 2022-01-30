@@ -63,9 +63,10 @@ namespace agent {
 class ThreadHelper
 {
 public:
-    using DeviceRoleHandler = std::function<void(otDeviceRole)>;
-    using ScanHandler       = std::function<void(otError, const std::vector<otActiveScanResult> &)>;
-    using ResultHandler     = std::function<void(otError)>;
+    using DeviceRoleHandler     = std::function<void(otDeviceRole)>;
+    using ScanHandler           = std::function<void(otError, const std::vector<otActiveScanResult> &)>;
+    using ResultHandler         = std::function<void(otError)>;
+    using RnlRnbEventHandler    = std::function<void(const std::vector<std::vector<uint8_t>> &)>;
 
     /**
      * The constructor of a Thread helper.
@@ -83,6 +84,14 @@ public:
      *
      */
     void AddDeviceRoleHandler(DeviceRoleHandler aHandler);
+
+    /**
+     * This method adds a callback for a new RNL RedNodeBus Event.
+     *
+     * @param[in]   aHandler  The RNL RedNodeBus Event handler.
+     *
+     */
+    void AddRnlRnbEventHandler(RnlRnbEventHandler aHandler);
 
     /**
      * This method permits unsecure join on port.
@@ -224,7 +233,8 @@ private:
     ScanHandler                     mScanHandler;
     std::vector<otActiveScanResult> mScanResults;
 
-    std::vector<DeviceRoleHandler> mDeviceRoleHandlers;
+    std::vector<DeviceRoleHandler>  mDeviceRoleHandlers;
+    std::vector<RnlRnbEventHandler> mRnlRnbEventHandlers;
 
     std::map<uint16_t, size_t> mUnsecurePortRefCounter;
 

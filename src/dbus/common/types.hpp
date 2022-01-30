@@ -490,6 +490,11 @@ struct LeaderData
     uint8_t  mLeaderRouterId;    ///< Leader Router ID
 };
 
+struct RnlRnbEvent
+{
+    std::vector<uint8_t> mRnbEvent; // Array of bytes representing the RNL RedNodeBus event
+};
+
 } // namespace DBus
 } // namespace otbr
 

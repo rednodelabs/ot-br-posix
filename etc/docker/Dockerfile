@@ -25,7 +25,8 @@
 #  POSSIBILITY OF SUCH DAMAGE.
 #
 
-ARG BASE_IMAGE=ubuntu:bionic
+# ARG BASE_IMAGE=ubuntu:bionic
+ARG BASE_IMAGE=ubuntu:hirsute
 FROM ${BASE_IMAGE}
 
 ARG INFRA_IF_NAME
@@ -53,8 +54,8 @@ ENV REFERENCE_DEVICE=${REFERENCE_DEVICE:-0}
 ENV RELEASE=${RELEASE:-1}
 ENV NAT64=${NAT64:-1}
 ENV DNS64=${DNS64:-1}
-ENV WEB_GUI=${WEB_GUI:-1}
-ENV REST_API=${REST_API:-1}
+ENV WEB_GUI=${WEB_GUI:-0}
+ENV REST_API=${REST_API:-0}
 ENV DOCKER 1
 
 RUN env
@@ -103,6 +104,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
   ))
 
-ENTRYPOINT ["/app/etc/docker/docker_entrypoint.sh"]
+# ENTRYPOINT ["/app/etc/docker/docker_entrypoint.sh"]
 
-EXPOSE 80
+# EXPOSE 80

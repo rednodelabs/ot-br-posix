@@ -73,6 +73,8 @@ otbrError DBusMessageEncode(DBusMessageIter *aIter, const LeaderData &aLeaderDat
 otbrError DBusMessageExtract(DBusMessageIter *aIter, LeaderData &aLeaderData);
 otbrError DBusMessageEncode(DBusMessageIter *aIter, const ChannelQuality &aQuality);
 otbrError DBusMessageExtract(DBusMessageIter *aIter, ChannelQuality &aQuality);
+otbrError DBusMessageEncode(DBusMessageIter *aIter, const RnlRnbEvent &rnbEvent);
+otbrError DBusMessageExtract(DBusMessageIter *aIter, RnlRnbEvent &rnbEvent);
 
 template <typename T> struct DBusTypeTrait;
 
@@ -98,6 +100,18 @@ template <> struct DBusTypeTrait<std::vector<uint8_t>>
 {
     // array of bytes
     static constexpr const char *TYPE_AS_STRING = "ay";
+};
+
+template <> struct DBusTypeTrait<RnlRnbEvent>
+{
+    // array of bytes
+    static constexpr const char *TYPE_AS_STRING = "ay";
+};
+
+template <> struct DBusTypeTrait<std::vector<RnlRnbEvent>>
+{
+    // array of struct of array of bytes
+    static constexpr const char *TYPE_AS_STRING = "a(ay)";
 };
 
 template <size_t SIZE> struct DBusTypeTrait<std::array<uint8_t, SIZE>>
