@@ -33,6 +33,11 @@ function parse_args()
 {
     while [ $# -gt 0 ]; do
         case $1 in
+            --otbr-agent-log-level)
+                OTBR_AGENT_LOG_LEVEL="$2"
+                shift
+                shift
+                ;;
             --radio-url)
                 RADIO_URL="$2"
                 shift
@@ -70,6 +75,7 @@ function parse_args()
 
 parse_args "$@"
 
+[ -n "$OTBR_AGENT_LOG_LEVEL" ] || OTBR_AGENT_LOG_LEVEL="7"
 [ -n "$RADIO_URL" ] || RADIO_URL="spinel+hdlc+uart:///dev/ttyUSB0"
 [ -n "$TUN_INTERFACE_NAME" ] || TUN_INTERFACE_NAME="wpan0"
 [ -n "$BACKBONE_INTERFACE" ] || BACKBONE_INTERFACE="eth0"
@@ -77,6 +83,7 @@ parse_args "$@"
 [ -n "$AUTO_PREFIX_SLAAC" ] || AUTO_PREFIX_SLAAC=true
 [ -n "$NAT64_PREFIX" ] || NAT64_PREFIX="64:ff9b::/96"
 
+echo "OTBR_AGENT_LOG_LEVEL:" $OTBR_AGENT_LOG_LEVEL
 echo "RADIO_URL:" $RADIO_URL
 echo "TUN_INTERFACE_NAME:" $TUN_INTERFACE_NAME
 echo "BACKBONE_INTERFACE: $BACKBONE_INTERFACE"
@@ -90,7 +97,7 @@ sed -i "s/^prefix.*$/prefix $NAT64_PREFIX/" /etc/tayga.conf
 sed -i "s/dns64.*$/dns64 $NAT64_PREFIX {};/" /etc/bind/named.conf.options
 sed -i "s/$INFRA_IF_NAME/$BACKBONE_INTERFACE/" /etc/sysctl.d/60-otbr-accept-ra.conf
 
-echo "OTBR_AGENT_OPTS=\"-I $TUN_INTERFACE_NAME -B $BACKBONE_INTERFACE -d7 $RADIO_URL\"" >/etc/default/otbr-agent
+echo "OTBR_AGENT_OPTS=\"-I $TUN_INTERFACE_NAME -B $BACKBONE_INTERFACE -d$OTBR_AGENT_LOG_LEVEL $RADIO_URL\"" >/etc/default/otbr-agent
 echo "OTBR_WEB_OPTS=\"-I $TUN_INTERFACE_NAME -d7 -p 80\"" >/etc/default/otbr-web
 
 /app/script/server
