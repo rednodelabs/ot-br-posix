@@ -134,7 +134,7 @@ case "$(uname)" in
 
         if [ "${OTBR_MDNS-}" == 'mDNSResponder' ]; then
             SOURCE_NAME=mDNSResponder-1310.80.1
-            wget https://opensource.apple.com/tarballs/mDNSResponder/$SOURCE_NAME.tar.gz \
+            wget https://github.com/apple-oss-distributions/mDNSResponder/archive/refs/tags/$SOURCE_NAME.tar.gz \
                 && tar xvf $SOURCE_NAME.tar.gz \
                 && cd $SOURCE_NAME/Clients \
                 && sed -i '/#include <ctype.h>/a #include <stdarg.h>' dns-sd.c \
