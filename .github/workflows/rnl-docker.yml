@@ -70,6 +70,8 @@ jobs:
             REST_API=0
             BACKBONE_ROUTER=0
             OTBR_OPTIONS=-DOTBR_BACKBONE_ROUTER=OFF -DOT_THREAD_VERSION=1.1
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
           push: true
 
       - name: Move Docker cache
