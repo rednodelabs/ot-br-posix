@@ -257,25 +257,19 @@ exit:
 
 otbrError DBusMessageExtract(DBusMessageIter *aIter, OnMeshPrefix &aPrefix)
 {
-    DBusMessageIter sub;
-    otbrError       error = OTBR_ERROR_NONE;
+    DBusMessageIter sub, flagsSub;
+    auto            args     = std::tie(aPrefix.mPrefix, aPrefix.mPreference);
+    auto            flagArgs = std::tie(aPrefix.mPreferred, aPrefix.mSlaac, aPrefix.mDhcp, aPrefix.mConfigure,
+                             aPrefix.mDefaultRoute, aPrefix.mOnMesh, aPrefix.mStable);
+    otbrError       error    = OTBR_ERROR_NONE;
 
+    VerifyOrExit(dbus_message_iter_get_arg_type(aIter) == DBUS_TYPE_STRUCT, error = OTBR_ERROR_DBUS);
     dbus_message_iter_recurse(aIter, &sub);
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mPrefix));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mRloc16));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mPreference));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mPreferred));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mSlaac));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mDhcp));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mConfigure));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mDefaultRoute));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mOnMesh));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mStable));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mNdDns));
-    SuccessOrExit(error = DBusMessageExtract(&sub, aPrefix.mDp));
-
+    SuccessOrExit(error = ConvertToTuple(&sub, args));
+    VerifyOrExit(dbus_message_iter_get_arg_type(&sub) == DBUS_TYPE_STRUCT, error = OTBR_ERROR_DBUS);
+    dbus_message_iter_recurse(&sub, &flagsSub);
+    SuccessOrExit(error = ConvertToTuple(&flagsSub, flagArgs));
     dbus_message_iter_next(aIter);
-
 exit:
     return error;
 }
