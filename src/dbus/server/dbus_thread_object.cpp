@@ -441,8 +441,9 @@ void DBusThreadObject::AddOnMeshPrefixHandler(DBusRequest &aRequest)
     otError              error = OT_ERROR_NONE;
     otBorderRouterConfig config;
 
+    otbrLogCrit("HERE");
     VerifyOrExit(DBusMessageToTuple(*aRequest.GetMessage(), args) == OTBR_ERROR_NONE, error = OT_ERROR_INVALID_ARGS);
-
+    otbrLogCrit("THERE");
     // size is guaranteed by parsing
     std::copy(onMeshPrefix.mPrefix.mPrefix.begin(), onMeshPrefix.mPrefix.mPrefix.end(),
               &config.mPrefix.mPrefix.mFields.m8[0]);
