@@ -196,11 +196,11 @@ public:
         // invalidated_properties
         SuccessOrExit(error = DBusMessageEncode(&iter, std::vector<std::string>()));
 
-        if (otbrLogGetLevel() >= OTBR_LOG_DEBUG)
+        /*if (otbrLogGetLevel() >= OTBR_LOG_DEBUG)
         {
             otbrLogDebug("Signal %s.%s", aInterfaceName.c_str(), aPropertyName.c_str());
             DumpDBusMessage(*signalMsg);
-        }
+        }*/
 
         VerifyOrExit(dbus_connection_send(mConnection, signalMsg.get(), nullptr), error = OTBR_ERROR_DBUS);
 
@@ -252,11 +252,11 @@ public:
         // invalidated_properties
         SuccessOrExit(error = DBusMessageEncode(&iter, std::vector<std::string>()));
 
-        if (otbrLogGetLevel() >= OTBR_LOG_DEBUG)
+        /*if (otbrLogGetLevel() >= OTBR_LOG_DEBUG)
         {
             otbrLogDebug("Signal %s.%s", aInterfaceName.c_str(), aPropertyName.c_str());
             DumpDBusMessage(*signalMsg);
-        }
+        }*/
 
         VerifyOrExit(dbus_connection_send(mConnection, signalMsg.get(), nullptr), error = OTBR_ERROR_DBUS);
 
