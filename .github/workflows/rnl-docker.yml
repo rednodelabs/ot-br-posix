@@ -50,7 +50,7 @@ jobs:
           fi
 
           echo "Docker image to push: ${{ env.RNL_DOCKER_REPO }}:$tag"
-          echo "::set-output name=DOCKER_TAG::$tag"
+          echo "DOCKER_TAG=$tag" >> "$GITHUB_OUTPUT"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -62,7 +62,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/arm64
+          platforms: linux/arm64,linux/amd64
           tags: ${{ env.RNL_DOCKER_REPO }}:${{ steps.define-docker-tag.outputs.DOCKER_TAG }}
           file: etc/docker/Dockerfile
           build-args: |
